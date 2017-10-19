@@ -24,14 +24,25 @@ Install Postgres:
   download from http://www.postgresql.org/download/
 
 * Option:  
-  CentOS: 
+  Ubuntu 16.04.3 LTS: 
 
   ```
-  sudo yum install postgresql postgresql-server postgresql-devel
+  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  sudo apt-get install wget ca-certificates
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  sudo apt-get update
+  sudo apt-get upgrade
+  sudo apt-get install -y postgresql-10
+  dpkg -L postgresql-10
+  echo "export PATH=/usr/lib/postgresql/10/bin:\$PATH" >> /etc/profile
+  mkdir -p /opt/pg
+  chown -R postgres:postgres /opt/pg
+  su - postgres
+  cd
+  initdb -D /opt/pg/my_pg_data -E UTF8 --locale=C -U postgres
+  pg_ctl -D /opt/pg/my_pg_data -l /opt/pg/my_pg_data/server.log start
+  psql -h localhost -U postgres -d postgres
   ```
-* Option:  
-  Download From http://www.enterprisedb.com/products-services-training/pgdownload
-
 
 INSTALL
 -------
@@ -57,8 +68,11 @@ INSTALL
 
   mkdir build
   cd build
+  apt-get install -y postgresql-server-dev-10
+  cmake -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql/ ..
+  vim CMakeFiles/pg_jieba.dir/flags.make
+  为CXX_INCLUDES添加-I/usr/include/postgresql/10/server/
 
-  cmake ..
   # if postgresql is installed customized, Try cmd like following  
   # cmake -DCMAKE_PREFIX_PATH=/PATH/TO/PGSQL_INSTALL_DIR ..
 
