@@ -7,7 +7,7 @@ pg_jieba is a PostgreSQL extension for full-text search of Chinese.
 It implements by importing cppjieba.  
 
 ## NOTE
-It should work with PostgreSQL 10 
+It should work with PostgreSQL 10  
 It is tested with PostgreSQL 10 on Ubuntu 16.04.3 LTS
 
 PREPARE
